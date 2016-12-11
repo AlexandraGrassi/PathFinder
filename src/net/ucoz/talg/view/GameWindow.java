@@ -37,7 +37,7 @@ public class GameWindow extends JFrame {
 
         this.pack();
 
-        //this.setVisible(true);
+        this.setVisible(true);
     }
 
     public LinkedList<MapCell> findPath(int startingPoint, int endPoint) {
@@ -55,10 +55,8 @@ public class GameWindow extends JFrame {
     private JPanel setButtonPanel() {
 
         JPanel buttonPanel = new JPanel(true);
-
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-        buttonGenerate = new BigButton("Новая карта");
+        //buttonPanel.setBackground(new Color(90, 100, 255));
+        buttonGenerate = new BigButton("НОВАЯ КАРТА!");
 
         buttonGenerate.addActionListener(new ActionListener() {
             @Override

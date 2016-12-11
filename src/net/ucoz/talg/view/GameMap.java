@@ -28,9 +28,9 @@ public class GameMap extends JComponent {
 
         movementPath = new LinkedList<>();
 
-        this.setPreferredSize(new Dimension(600, 300));
+        this.setPreferredSize(new Dimension(800, 500));
 
-        movementSpeed = 1;
+        movementSpeed = 0.5;
 
         player = new Player();
 
@@ -104,7 +104,7 @@ public class GameMap extends JComponent {
                 double velX = (tx/dist) * movementSpeed;
                 double velY = (ty/dist) * movementSpeed;
 
-                while(dist > 1) {
+                while(dist > 0.1) {
 
                     try {
                         Thread.sleep(2);
@@ -134,10 +134,6 @@ public class GameMap extends JComponent {
         this.cellMap = cellMap;
 
         player.setCurrentCell(cellMap[0][0]);
-
-        isMoving = false;
-
-        player.setMoving(false);
 
         player.setVisible(true);
     }
@@ -178,7 +174,6 @@ public class GameMap extends JComponent {
 
                     g2.setPaint(Color.DARK_GRAY);
                     g2.draw(new Rectangle2D.Double(x, y, sizeX, sizeY));
-
                 }
             }
         }
@@ -205,7 +200,7 @@ public class GameMap extends JComponent {
                 }
             }
 
-            g2.setPaint(Color.LIGHT_GRAY);
+            g2.setPaint(Color.WHITE);
             g2.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
 
             g2.draw(polyline);
@@ -233,6 +228,5 @@ public class GameMap extends JComponent {
         drawPlayer(g2);
 
     }
-
 
 }

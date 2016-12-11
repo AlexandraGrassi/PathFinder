@@ -5,7 +5,7 @@ import java.awt.*;
 public class MapCell {
     private Color cellColor;
 
-    final private Color grassColor = new Color(60, 160, 80);
+    final private Color skyColor = new Color(102, 178, 255);
     final private Color obstacleColor = new Color(70, 40, 10);
 
     private int x;
@@ -30,7 +30,7 @@ public class MapCell {
         this.traversable = traversable;
 
         if (traversable) {
-            cellColor = grassColor;
+            cellColor = skyColor;
         }
         else {
             cellColor = obstacleColor;

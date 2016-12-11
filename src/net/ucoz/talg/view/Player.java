@@ -6,9 +6,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by Никита on 20.11.2016.
- */
 public class Player {
 
     private double x;
@@ -63,7 +60,7 @@ public class Player {
 
     public Player() {
         try {
-            image = ImageIO.read(new File("invader.png"));
+            image = ImageIO.read(new File("clefairy.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
