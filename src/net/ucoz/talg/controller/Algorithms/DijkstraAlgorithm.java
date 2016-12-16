@@ -3,7 +3,7 @@ package net.ucoz.talg.controller.Algorithms;
 import net.ucoz.talg.model.AdjacencyListItem;
 import net.ucoz.talg.model.Graph;
 import net.ucoz.talg.model.GraphNode;
-import net.ucoz.talg.utils.MyLinkedList;
+import net.ucoz.talg.utils.MyDynamicArray;
 import net.ucoz.talg.utils.MyPriorityQueue;
 
 import java.util.*;
@@ -14,7 +14,7 @@ public class DijkstraAlgorithm implements PathFindingAlgorithm {
     private List<AdjacencyListItem>[] adjacencyList;
 
     private MyPriorityQueue<GraphNode> visitedCells;
-    private MyLinkedList<Cell> distances; //  тут храним длину кратчайшего пути для каждой вершины
+    private MyDynamicArray<Cell> distances; //  тут храним текущую длину кратчайшего пути для каждой вершины из стартовой вершины
 
 
     @Override
@@ -41,10 +41,10 @@ public class DijkstraAlgorithm implements PathFindingAlgorithm {
         GraphNode startNode = nodes[indexNodeStart];
         GraphNode finishNode = nodes[indexNodeFinish];
 
-        distances = new MyLinkedList<>();
+        distances = new MyDynamicArray<>();
         visitedCells = new MyPriorityQueue<>((o1, o2) -> {
-            Cell cell1 = distances.getElement(o1.getNodeIndex());
-            Cell cell2 = distances.getElement(o2.getNodeIndex());
+            Cell cell1 = distances.get(o1.getNodeIndex());
+            Cell cell2 = distances.get(o2.getNodeIndex());
 
             if (cell1.cost != cell2.cost){
                 return cell1.cost < cell2.cost ? 1 : -1;
@@ -58,24 +58,24 @@ public class DijkstraAlgorithm implements PathFindingAlgorithm {
 
         // изначально вес всех узлов равен бесконечности
         for (GraphNode node : nodes){
-            distances.insertElement(new Cell(node, Integer.MAX_VALUE));
+            distances.add(new Cell(node, Integer.MAX_VALUE));
         }
 
         // текущий узел = стартовая вершина
         GraphNode currentNode = startNode;
         // вес стартовой вершины равен 0
-        distances.insertElementAt(new Cell(currentNode, 0), 0);
+        distances.addToIndex(new Cell(currentNode, 0), 0);
         // добавляем стартовую вершину в список посещенных клеток
         visitedCells.enqueue(currentNode);
 
         // пока список посещенных клеток не пуст
         while (!visitedCells.isEmpty()) {
             currentNode.setVisited(true);
-            // текущий узел с наибольшим приоритетом(наименьший вес) извлекается из списка посещенных клеток
+            // текущий узел с наибольшим приоритетом (наименьший вес) извлекается из списка посещенных клеток
             currentNode = visitedCells.dequeue();
-            Cell currentCell = distances.getElement(currentNode.getNodeIndex());
+            Cell currentCell = distances.get(currentNode.getNodeIndex());
 
-            // если текущий узел = конечной вершине, то перерасчет веса закончен
+            // если текущий узел = конечной вершине, то перерасчет веса закончен, выходим из цикла
             if (currentNode == finishNode){
                 break;
             }
@@ -83,17 +83,17 @@ public class DijkstraAlgorithm implements PathFindingAlgorithm {
             // список соседей текущего узла
             List<AdjacencyListItem> neighbours = adjacencyList[currentNode.getNodeIndex()];
 
-            // для каждого сесднего узла
+            // для каждого соседнего узла
             for (AdjacencyListItem neighbourItem : neighbours) {
                 GraphNode neighbour = neighbourItem.getNode();
                 double weight = neighbourItem.getWeight();
 
-                // если соседний узел уже посещен, то продолжить дальше
+                // если соседний узел уже посещен, то ищем дальше непосещенные узлы
                 if (neighbour.isVisited()){
                     continue;
                 }
 
-                Cell neighbourCell = distances.getElement(neighbour.getNodeIndex());
+                Cell neighbourCell = distances.get(neighbour.getNodeIndex());
                 // перерасчет цены (цена текущей вершины + вес соседнего узла)
                 double newCost = currentCell.cost + weight;
 
@@ -124,7 +124,7 @@ public class DijkstraAlgorithm implements PathFindingAlgorithm {
 
         // пока мы не дошли до стартовой вершины
         while (currentNode != startNode) {
-            currentNode = distances.getElement(currentNode.getNodeIndex()).parentNode;
+            currentNode = distances.get(currentNode.getNodeIndex()).parentNode;
             path.add(currentNode);
         }
 

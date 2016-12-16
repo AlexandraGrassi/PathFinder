@@ -5,17 +5,21 @@ package net.ucoz.talg.utils;
  */
 public class MyLinkedList<E> {
 
-    private class Node {
+    protected class Node {
         E value;
         Node next;
+
+        protected Node(E value) {
+            this.value = value;
+        }
     }
 
-    private Node begin;
+    private Node head;
     private int size;
 
     public MyLinkedList() {
         size = 0;
-        begin = null;
+        head = null;
     }
 
     /**
@@ -24,20 +28,19 @@ public class MyLinkedList<E> {
      * @param index позиция
      * @return true если успешно
      */
-    public boolean insertElementAt(E element, int index) {
+    public boolean insertElementAt(int index, E element) {
         if (index > size){
             return false;
         }
 
-        Node node = new Node();
-        node.value = element;
+        Node node = new Node(element);
 
         if (size == 0) {
-            begin = node;
+            head = node;
         } else {
             int position = 0;
 
-            Node currentNode = begin;
+            Node currentNode = head;
             while (currentNode != null) {
                 if (position == index - 1) {
                     if (index < size) {
@@ -62,7 +65,7 @@ public class MyLinkedList<E> {
      * @return true если успешно
      */
     public boolean insertElement(E element) {
-        return insertElementAt(element, size);
+        return insertElementAt(size, element);
     }
 
     /**
@@ -73,7 +76,7 @@ public class MyLinkedList<E> {
     public E getElement(int index) {
         int position = 0;
 
-        Node currentNode = begin;
+        Node currentNode = head;
         while (currentNode != null) {
             if (position == index) {
                 return currentNode.value;
@@ -97,14 +100,14 @@ public class MyLinkedList<E> {
         }
 
         int position = 0;
-        Node node = begin;
+        Node node = head;
         Node prev = null;
         while (node != null) {
             if (position == index) {
                 if (prev != null) {
                     prev.next = node.next;
                 } else {
-                    begin = begin.next;
+                    head = head.next;
                 }
 
                 size--;
@@ -134,7 +137,7 @@ public class MyLinkedList<E> {
         }
 
         int position = 0;
-        Node node = begin;
+        Node node = head;
         while (node != null) {
             if (node.value.equals(element)) {
                 return position;
@@ -159,7 +162,9 @@ public class MyLinkedList<E> {
      * Получить размер списка
      * @return Текущий размер списка
      */
-    public int getSize() {
+    public int size() {
         return size;
     }
+
+    public boolean isEmpty() { return size == 0; }
 }

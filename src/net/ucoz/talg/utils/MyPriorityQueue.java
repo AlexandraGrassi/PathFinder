@@ -2,15 +2,7 @@ package net.ucoz.talg.utils;
 
 import java.util.Comparator;
 
-public class MyPriorityQueue<E> {
-    class Node {
-        E element;
-        Node next = null;
-
-        public Node(E element) {
-            this.element = element;
-        }
-    }
+public class MyPriorityQueue<E> extends MyLinkedList<E>{
 
     private Node head;
     private int size;
@@ -44,7 +36,7 @@ public class MyPriorityQueue<E> {
     }
 
     /**
-     * Удалить элемент из очереди
+     * Извлечь элемент c максимальным приоритетом из очереди
      * @return E извлеченный элемент
      */
     public E dequeue() {
@@ -59,7 +51,7 @@ public class MyPriorityQueue<E> {
         Node max = head;
 
         while(node != null) {
-            if(comparator.compare(max.element, node.element) < 0) {
+            if(comparator.compare(max.value, node.value) < 0) {
                 maxPrev = prev;
                 max = node;
             }
@@ -75,32 +67,11 @@ public class MyPriorityQueue<E> {
 
         size--;
 
-        return max.element;
-    }
-
-    /**
-     * Есть ли в очереди указанный элемент
-     * @param  element
-     * @return true если элемент есть в очереди
-     */
-    public boolean contains(E element) {
-        Node item = head;
-
-        while(item != null) {
-            if(item.element == element) {
-                return true;
-            }
-            item = item.next;
-        }
-
-        return false;
+        return max.value;
     }
 
     public boolean isEmpty() {
         return size == 0;
     }
 
-    public int getSize() {
-        return size;
-    }
 }
